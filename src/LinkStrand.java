@@ -6,6 +6,18 @@ public class LinkStrand implements IDnaStrand {
     private Node myCurrent;
     private int myLocalIndex;
 
+    private class Node {
+        String info;
+        Node next;
+        Node prev;
+    
+        public Node(String s) {
+            info = s;
+            next = null;
+            prev = null;
+        }
+    }
+
     public LinkStrand() {
         this("");
     }
