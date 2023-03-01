@@ -99,7 +99,11 @@ public class LinkStrand implements IDnaStrand {
         }
         myLocalIndex = index - myIndex;
         myIndex = index;
-        return myCurrent.myInfo.charAt(myLocalIndex);
+        char c = myCurrent.myInfo.charAt(myLocalIndex);
+        if (c == 'b') {
+            return ' ';
+        }
+        return c;
     }
 
     public String toString() {
