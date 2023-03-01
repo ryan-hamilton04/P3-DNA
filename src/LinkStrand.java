@@ -56,6 +56,7 @@ public class LinkStrand implements IDnaStrand {
         } else {
             myFirst = newNode;
         }
+        newNode.prev = myLast;
         myLast = newNode;
         mySize += dna.length();
         myAppends++;
@@ -68,7 +69,7 @@ public class LinkStrand implements IDnaStrand {
         StringBuilder strBuilder = new StringBuilder(currNode.myInfo);
         IDnaStrand newStrand = new LinkStrand(strBuilder.reverse().toString());
     
-        while (currNode != myFirst) {
+        while (currNode.prev != null) {
             currNode = currNode.prev;
             strBuilder = new StringBuilder(currNode.myInfo);
             newStrand.append(strBuilder.reverse().toString());
@@ -92,12 +93,12 @@ public class LinkStrand implements IDnaStrand {
             myLocalIndex = 0;
             myIndex = 0;
         }
-        while (index >= myIndex + myCurrent.myInfo.length()) {
-            myIndex += myCurrent.myInfo.length();
+        while (index >= myIndex + myCurrent.myInfo.length() - myLocalIndex) {
+            myIndex += myCurrent.myInfo.length() - myLocalIndex;
             myLocalIndex = 0;
             myCurrent = myCurrent.myNext;
         }
-        myLocalIndex = index - myIndex;
+        myLocalIndex += index - myIndex;
         myIndex = index;
         return myCurrent.myInfo.charAt(myLocalIndex);
     }
