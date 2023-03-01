@@ -68,7 +68,7 @@ public class LinkStrand implements IDnaStrand {
         StringBuilder strBuilder = new StringBuilder(currNode.myInfo);
         IDnaStrand newStrand = new LinkStrand(strBuilder.reverse().toString());
     
-        while (currNode != myFirst) {
+        while (currNode != null) {
             currNode = currNode.prev;
             strBuilder = new StringBuilder(currNode.myInfo);
             newStrand.append(strBuilder.reverse().toString());
@@ -87,27 +87,19 @@ public class LinkStrand implements IDnaStrand {
         if (index < 0 || index >= mySize) {
             throw new IndexOutOfBoundsException("Index out of bounds: " + index);
         }
-    
-        // check if we can start search from the last accessed node
-        if (myCurrent != null && index >= myIndex && index < myIndex + myCurrent.myInfo.length()) {
-            myLocalIndex = index - myIndex;
-            return myCurrent.myInfo.charAt(myLocalIndex);
+        if (index < myIndex) {
+            myCurrent = myFirst;
+            myLocalIndex = 0;
+            myIndex = 0;
         }
-    
-        // search for the node containing the character we want
-        Node current = myFirst;
-        int currentIndex = 0;
-        while (index >= currentIndex + current.myInfo.length()) {
-            currentIndex += current.myInfo.length();
-            current = current.myNext;
+        while (index >= myIndex + myCurrent.myInfo.length()) {
+            myIndex += myCurrent.myInfo.length();
+            myLocalIndex = 0;
+            myCurrent = myCurrent.myNext;
         }
-    
-        // update instance variables for future calls
-        myCurrent = current;
-        myIndex = currentIndex;
-        myLocalIndex = index - currentIndex;
-    
-        return current.myInfo.charAt(myLocalIndex);
+        myLocalIndex = index - myIndex;
+        myIndex = index;
+        return myCurrent.myInfo.charAt(myLocalIndex);
     }
 
     public String toString() {
