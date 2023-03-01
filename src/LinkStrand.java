@@ -64,17 +64,21 @@ public class LinkStrand implements IDnaStrand {
 
     @Override
     public IDnaStrand reverse() {
-        Node currNode = myLast;
-        StringBuilder strBuilder = new StringBuilder(currNode.myInfo);
-        IDnaStrand newStrand = new LinkStrand(strBuilder.reverse().toString());
+        Node currNode = myFirst;
+        Node prevNode = null;
+        Node nextNode;
     
-        while (currNode != myFirst) {
-            currNode = currNode.prev;
-            strBuilder = new StringBuilder(currNode.myInfo);
-            newStrand.append(strBuilder.reverse().toString());
+        while (currNode != null) {
+            nextNode = currNode.myNext;
+            currNode.myNext = prevNode;
+            prevNode = currNode;
+            currNode = nextNode;
         }
     
-        return newStrand;
+        myLast = myFirst;
+        myFirst = prevNode;
+    
+        return this;
     }
 
     @Override
@@ -99,11 +103,7 @@ public class LinkStrand implements IDnaStrand {
         }
         myLocalIndex = index - myIndex;
         myIndex = index;
-        char c = myCurrent.myInfo.charAt(myLocalIndex);
-        if (c == 'b') {
-            return ' ';
-        }
-        return c;
+        return myCurrent.myInfo.charAt(myLocalIndex);
     }
 
     public String toString() {
