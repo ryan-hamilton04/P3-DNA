@@ -7,13 +7,13 @@ public class LinkStrand implements IDnaStrand {
     private int myLocalIndex;
 
     private class Node {
-        String info;
-        Node next;
+        String myInfo;
+        Node myNext;
         Node prev;
     
         public Node(String s) {
-            info = s;
-            next = null;
+            myInfo = s;
+            myNext = null;
             prev = null;
         }
     }
@@ -45,14 +45,14 @@ public class LinkStrand implements IDnaStrand {
 
     @Override
     public IDnaStrand getInstance(String source) {
-        return new LinkStrand(dna);
+        return new LinkStrand(source);
     }
 
     @Override
     public IDnaStrand append(String dna) {
         Node newNode = new Node(dna);
         if (myLast != null) {
-            myLast.next = newNode;
+            myLast.myNext = newNode;
         } else {
             myFirst = newNode;
         }
@@ -65,12 +65,12 @@ public class LinkStrand implements IDnaStrand {
     @Override
     public IDnaStrand reverse() {
         Node currNode = myLast;
-        StringBuilder strBuilder = new StringBuilder(currNode.info);
+        StringBuilder strBuilder = new StringBuilder(currNode.myInfo);
         IDnaStrand newStrand = new LinkStrand(strBuilder.reverse().toString());
     
         while (currNode != myFirst) {
             currNode = currNode.prev;
-            strBuilder = new StringBuilder(currNode.info);
+            strBuilder = new StringBuilder(currNode.myInfo);
             newStrand.append(strBuilder.reverse().toString());
         }
     
@@ -106,8 +106,8 @@ public class LinkStrand implements IDnaStrand {
         StringBuilder result = new StringBuilder();
         Node current = myFirst;
         while (current != null) {
-            result.append(current.info);
-            current = current.next;
+            result.append(current.myInfo);
+            current = current.myNext;
         }
         return result.toString();
     }
